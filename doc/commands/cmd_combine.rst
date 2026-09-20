@@ -37,9 +37,26 @@ so that every data file is distinct::
 
 You can also define a new data file name with the ``[run] data_file`` option.
 
-Once you have created a number of these files, you can copy them all to a
-single directory, and use the **combine** command to combine them into one
-.coverage data file::
+If independent test runners use coverage.py concurrently in the same working
+directory, give each runner a different *base* data file name.  This is
+important with tools such as ``tox --parallel``: parallel mode makes the
+individual measurement files unique, but separate tox environments can still
+combine or erase files using the same base name at the same time.
+
+For example, tox can give every environment its own base name::
+
+    [testenv]
+    setenv =
+        COVERAGE_FILE = {toxinidir}/.coverage.{envname}
+
+After all tox environments have finished, combine those files using the common
+``.coverage`` prefix::
+
+    $ coverage combine --data-file=.coverage
+
+Once you have created a number of separate data files, you can also copy them
+all to a single directory, and use the **combine** command to combine them into
+one .coverage data file::
 
     $ coverage combine
 
