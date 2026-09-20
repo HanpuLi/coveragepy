@@ -49,8 +49,9 @@ For example, tox can give every environment its own base name::
     setenv =
         COVERAGE_FILE = {toxinidir}/.coverage.{envname}
 
-After all tox environments have finished, combine those files using the common
-``.coverage`` prefix::
+After all tox environments have finished, the reporting commands can
+automatically combine those files using their common ``.coverage`` prefix, as
+described above.  You can also combine them explicitly::
 
     $ coverage combine --data-file=.coverage
 
