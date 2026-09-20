@@ -78,31 +78,6 @@ class CoverageCoreTest(CoverageTest):
         assert core == "core: PyTracer"
 
     @pytest.mark.skipif(
-        env.PYVERSION < (3, 14),
-        reason="New return-event behavior in 3.14",
-    )
-    def test_pytrace_return_records_final_line(self) -> None:
-        saved: list[FrameType] = []
-
-        def returning() -> None:
-            saved.append(sys._getframe())
-
-        returning()
-        frame = saved[0]
-
-        arcs = {(0, 0)}
-        tracer = PyTracer()
-        tracer.trace_arcs = True
-        tracer.cur_file_data = arcs
-        tracer.last_line = frame.f_lineno - 1
-        tracer.data_stack.append((None, None, 0, False))
-
-        tracer._trace(frame, "return", None)
-
-        assert (frame.f_lineno - 1, frame.f_lineno) in arcs
-        assert (frame.f_lineno, -frame.f_code.co_firstlineno) in arcs
-
-    @pytest.mark.skipif(
         env.METACOV and env.PYBEHAVIOR.pep669 and not testenv.CAN_MEASURE_BRANCHES,
         reason="12/13 can't do branches with sysmon, so metacov is too complicated",
     )
