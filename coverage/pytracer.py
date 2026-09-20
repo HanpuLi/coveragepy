@@ -293,10 +293,7 @@ class PyTracer(Tracer):
                         real_return = True
                 if real_return:
                     # Python 3.14 can report a new line only on the return event.
-                    # Meta-coverage can't trace code running inside a trace callback.
-                    if (  # pragma: not covered
-                        env.PYVERSION >= (3, 14) and frame.f_lineno != self.last_line
-                    ):
+                    if env.PYVERSION >= (3, 14) and frame.f_lineno != self.last_line:
                         cast(set_TArc, self.cur_file_data).add((self.last_line, frame.f_lineno))
                         self.last_line = frame.f_lineno
                     first = frame.f_code.co_firstlineno
