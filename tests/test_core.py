@@ -5,15 +5,11 @@
 
 from __future__ import annotations
 
-import sys
-from types import FrameType
-
 import pytest
 
 import coverage
 from coverage import env
 from coverage.exceptions import ConfigError
-from coverage.pytracer import PyTracer
 from tests import testenv
 from tests.coveragetest import CoverageTest
 from tests.helpers import re_line, re_lines
