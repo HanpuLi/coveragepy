@@ -23,8 +23,8 @@ upgrading your version of coverage.py.
 Unreleased
 ----------
 
-- Fix: on Python 3.14, the ``ctrace`` core now records the final line
-  reported by a return event when no line event was emitted for it.
+- Fix: on Python 3.14, the ``ctrace`` and ``pytrace`` cores now record the
+  final line reported by a return event when no line event was emitted for it.
   This fixes false missing branches when a ``for`` loop completes immediately
   before a function return. Closes `issue 2168`_.
 

@@ -15,7 +15,6 @@ import coverage.python
 from coverage import env
 from coverage.data import sorted_lines
 from coverage.files import abs_file
-from tests import testenv
 from tests.coveragetest import CoverageTest
 from tests.helpers import assert_count_equal
 
@@ -506,7 +505,6 @@ class LoopArcTest(CoverageTest):
             branchz_missing="",
         )
 
-    @pytest.mark.skipif(not testenv.C_TRACER, reason="Issue 2168 only affects the C tracer.")
     def test_bug_2168_loop_completion_before_return(self) -> None:
         self.check_coverage(
             """\
