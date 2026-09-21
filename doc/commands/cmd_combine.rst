@@ -37,24 +37,6 @@ so that every data file is distinct::
 
 You can also define a new data file name with the ``[run] data_file`` option.
 
-If independent test runners use coverage.py concurrently in the same working
-directory, give each runner a different *base* data file name.  This is
-important with tools such as ``tox --parallel``: parallel mode makes the
-individual measurement files unique, but separate tox environments can still
-combine or erase files using the same base name at the same time.
-
-For example, tox can give every environment its own base name::
-
-    [testenv]
-    setenv =
-        COVERAGE_FILE = {toxinidir}/.coverage.{envname}
-
-After all tox environments have finished, the reporting commands can
-automatically combine those files using their common ``.coverage`` prefix, as
-described above.  You can also combine them explicitly::
-
-    $ coverage combine --data-file=.coverage
-
 Once you have created a number of separate data files, you can also copy them
 all to a single directory, and use the **combine** command to combine them into
 one .coverage data file::
@@ -115,6 +97,28 @@ want to keep those files, use the ``--keep`` command-line option.
                             'setup.cfg', 'tox.ini', and 'pyproject.toml' are
                             tried. [env: COVERAGE_RCFILE]
 .. [[[end]]] (sum: ARyg8KB1fE)
+
+
+Parallel test runners
+.....................
+
+If independent test runners use coverage.py concurrently in the same working
+directory, give each runner a different *base* data file name.  This is
+important with tools such as ``tox --parallel``: coverage's parallel mode makes
+the individual measurement files unique, but separate tox environments can
+still combine or erase files using the same base name at the same time.
+
+You can use tox settings to give each tox environment a distinct base coverage
+data file name so their combine steps won't collide::
+
+    [testenv]
+    setenv =
+        COVERAGE_FILE = {toxinidir}/.coverage.{envname}
+
+Each environment can run coverage in parallel, and combine their data files
+into a distinct data file. After the test-running tox environments have
+finished, a final second-level combining environment can combine those files
+using their common ``.coverage`` prefix, as described above.
 
 
 .. _cmd_combine_remapping:
